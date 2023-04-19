@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Weather Chart</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <style>
+    body {
+      background: url('https://source.unsplash.com/featured/?weather') no-repeat center center fixed;
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Detailed Weather Report</h1>
+    </header>
+    <main>
+      <div class="weather-card">
+        <div class="weather-data">
+          <h2>Temperature</h2>
+          <canvas id="myChart"></canvas>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Replace with your own API key
+    const apiKey = 'd37f120ee7b3143054979cbc19bb094d';
+    const city = 'nandikkara';
+    const url = `http://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}`;
+
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        const temperatures = data.list.map(item => item.main.temp);
+        const labels = data.list.map(item => item.dt_txt);
+
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const myChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels,
+            datasets: [{
+              label: `Temperature in Prajyoti Niketan College`,
+              data: temperatures,
+              backgroundColor: 'rgba(255, 99, 132, 0.2)',
+              borderColor: 'rgba(255, 99, 132, 1)',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            scales: {
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true
+                }
+              }]
+            }
+          }
+        });
+      });
+  </script>
+</body>
+</html>
